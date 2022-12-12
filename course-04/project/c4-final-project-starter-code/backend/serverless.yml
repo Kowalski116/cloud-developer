@@ -56,6 +56,20 @@ functions:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
+  GetTodo:
+    handler: src/lambda/http/getTodo.handler
+    events:
+      - http:
+          method: get
+          path: todos/{todoId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
     events:
@@ -122,7 +136,7 @@ functions:
 
 resources:
   Resources:
-
+  
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:

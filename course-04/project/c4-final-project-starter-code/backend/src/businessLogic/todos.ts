@@ -16,6 +16,7 @@ export const todoBuilder = (
     userId: getUserId(event),
     done: false,
     attachmentUrl: '',
+    note: '',
     ...todoRequest
   }
   return todo

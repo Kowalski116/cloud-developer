@@ -7,7 +7,6 @@ const XAWS = AWSXRay.captureAWS(AWS)
 
 const docClient: DocumentClient = createDynamoDBClient()
 const todosTable = process.env.TODOS_TABLE
-const index = process.env.TODOS_CREATED_AT_INDEX
 // TODO: Implement the dataLayer logic
 export async function createTodo(todo: TodoItem): Promise<TodoItem> {
   await docClient
@@ -53,8 +52,7 @@ export async function getTodoById(
   const result = await docClient
     .query({
       TableName: todosTable,
-      IndexName: index,
-      KeyConditionExpression: 'todoId = :todoId and userId = :userId',
+      KeyConditionExpression: 'userId = :userId and todoId = :todoId',
       ExpressionAttributeValues: {
         ':userId': userId,
         ':todoId': todoId
@@ -72,12 +70,13 @@ export async function updateToDo(todo: TodoItem): Promise<TodoItem> {
       TableName: todosTable,
       Key: { userId: todo.userId, todoId: todo.todoId },
       ConditionExpression: 'attribute_exists(todoId)',
-      UpdateExpression: 'set #n = :n, dueDate = :due, done = :dn',
+      UpdateExpression: 'set #n = :n, dueDate = :due, done = :dn, note = :note',
       ExpressionAttributeNames: { '#n': 'name' },
       ExpressionAttributeValues: {
         ':n': todo.name,
         ':due': todo.dueDate,
-        ':dn': todo.done
+        ':dn': todo.done,
+        ':note': todo.note
       }
     })
     .promise()
