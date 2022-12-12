@@ -4,7 +4,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
 import { getUploadUrl } from '../../helpers/attachmentUtils'
-import { saveImgUrl } from '../../helpers/todosAcess'
+import { saveImgUrl } from '../../dataLayer/todosAcess'
 import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
 

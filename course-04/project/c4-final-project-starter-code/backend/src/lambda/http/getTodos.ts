@@ -3,9 +3,9 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors } from 'middy/middlewares'
-import { getAllTodosByUserId } from '../../helpers/todosAcess'
 import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
+import { getAllTodosByUserId } from '../../dataLayer/todosAcess'
 
 const logger = createLogger('getTodos')
 
